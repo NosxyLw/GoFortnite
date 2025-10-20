@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Page1 - Voyages</title>
+    <link rel="stylesheet" href="../css/css.css">
+</head>
+<body>
+    <header>
+        <h1>GoFornite - Voyages</h1>
+        <nav>
+            <a href="Page2.html">Logo / Slogan</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="carousel" id="carousel">
+            <div class="slides" id="slides">
+                <div class="slide"><img src="../images/img1.jpg" alt="Destination 1"></div>
+                <div class="slide"><img src="../images/img2.jpg" alt="Destination 2"></div>
+                <div class="slide"><img src="../images/img3.jpg" alt="Destination 3"></div>
+            </div>
+
+            <button class="prev" id="prev">❮</button>
+            <button class="next" id="next">❯</button>
+
+            <div class="controls" id="dots">
+                <div class="dot" data-index="0"></div>
+                <div class="dot" data-index="1"></div>
+                <div class="dot" data-index="2"></div>
+            </div>
+        </div>
+
+        <div class="caption">DE LA TEMPÊTE A LA ZONE SURE, ON T'EMMENÉ !</div>
+    </main>
+
+    <script>
+    // Simple carousel JS
+    (function(){
+        const slidesEl = document.getElementById('slides');
+        const slides = document.querySelectorAll('.slide');
+        const prev = document.getElementById('prev');
+        const next = document.getElementById('next');
+        const dots = Array.from(document.querySelectorAll('.dot'));
+        let index = 0;
+        const total = slides.length;
+        let timer = null;
+        function show(i){
+            index = (i + total) % total;
+            slidesEl.style.transform = 'translateX(' + (-index * 100) + '%)';
+            dots.forEach(d => d.classList.remove('active'));
+            dots[index].classList.add('active');
+        }
+        function nextSlide(){ show(index + 1); }
+        function prevSlide(){ show(index - 1); }
+
+        next.addEventListener('click', ()=>{ nextSlide(); resetTimer(); });
+        prev.addEventListener('click', ()=>{ prevSlide(); resetTimer(); });
+        dots.forEach(d => d.addEventListener('click', (e)=>{ show(parseInt(e.target.dataset.index)); resetTimer(); }));
+
+        function startTimer(){ timer = setInterval(nextSlide, 3500); }
+        function resetTimer(){ clearInterval(timer); startTimer(); }
+
+        // init
+        show(0);
+        startTimer();
+        // pause on hover
+        document.getElementById('carousel').addEventListener('mouseenter', ()=> clearInterval(timer));
+        document.getElementById('carousel').addEventListener('mouseleave', ()=> startTimer());
+    })();
+    </script>
+</body>
+</html>
